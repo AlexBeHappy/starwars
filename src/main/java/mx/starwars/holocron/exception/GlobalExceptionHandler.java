@@ -1,9 +1,11 @@
 package mx.starwars.holocron.exception;
 
+import mx.starwars.holocron.dto.ApiRs;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import java.util.Map;
 
@@ -35,5 +37,11 @@ public class GlobalExceptionHandler {
     public ResponseEntity<Map<String, String>> handleGenericException(Exception ex) {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(Map.of("error", "Error interno del servidor."));
+    }
+
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    public ResponseEntity<ApiRs<String>> handleTypeMismatch(MethodArgumentTypeMismatchException ex) {
+        String error = "Parámetro inválido";
+        return ResponseEntity.badRequest().body(new ApiRs<>(error, null));
     }
 }

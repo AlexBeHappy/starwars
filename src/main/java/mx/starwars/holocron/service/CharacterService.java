@@ -32,9 +32,6 @@ public class CharacterService {
      * @throws ApiException si la paginación es inválida o si ocurre un error al consultar los datos
      */
     public Page<CharacterDto> getCharacters(Pageable pageable) {
-        if (pageable.getPageNumber() < 0 || pageable.getPageSize() <= 0) {
-            throw new ApiException(AppConstants.INVALID_PAGINATION, HttpStatus.BAD_REQUEST);
-        }
         try {
             Page<Character> page = characterRepository.findAll(pageable);
             return page.map(CharacterDto::new);

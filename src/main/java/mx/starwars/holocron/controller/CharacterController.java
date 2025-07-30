@@ -53,6 +53,9 @@ public class CharacterController {
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "5") int size
     ) {
+        if (page < 0 || size < 1) {
+            throw new ApiException(AppConstants.INVALID_PAGINATION, HttpStatus.BAD_REQUEST);
+        }
         Pageable pageable = PageRequest.of(page, size);
         Page<CharacterDto> pageResult = characterService.getCharacters(pageable);
 
